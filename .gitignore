@@ -1,0 +1,9 @@
+# Ignorar node_modules
+node_modules/
+
+# Ignorar package.json y package-lock.json
+package.json
+package-lock.json
+
+#Eslint
+eslint.config.mjs

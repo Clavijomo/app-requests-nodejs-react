@@ -5,7 +5,7 @@ const router = Router();
 
 router.
     post('/', createRequest)
-    .delete('/:id', deleteRequest)
+    .delete('/:code', deleteRequest)
     .get('/', getAllRequests)
 
 export default router

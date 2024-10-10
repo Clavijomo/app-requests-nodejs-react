@@ -8,6 +8,15 @@ export const API = axios.create({
     }
 });
 
+export const setAuthToken = (token) => {
+    if (token) {
+        return API.defaults.headers.common['Authorization'] = token
+    }
+
+    return delete API.defaults.headers.common['Authorization'];
+}
+
+
 API.interceptors.response.use(
     response => response,
     error => {

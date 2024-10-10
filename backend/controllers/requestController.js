@@ -31,10 +31,11 @@ export const createRequest = async (req, res) => {
 export const deleteRequest = async (req, res) => {
     try {
         const { code } = req.params;
-        const existRequest = await Request.findOne({ code });
+
+        const existRequest = await Request.findOne({ code: code });
 
         if (!existRequest) {
-            return res.status(404).json({ message: `La solicitud: ${code} no existe` });
+            return res.status(404).json({ message: "La solicitud no existe" });
         }
 
         const query = { code: code };
@@ -55,7 +56,7 @@ export const getAllRequests = async (_, res) => {
     try {
         const requests = await Request.find();
 
-        res.status(200).json(requests);
+        res.status(200).json({ data: requests });
     } catch (err) {
         res.status(500).json({ message: "Hubo un error", error: err.message });
     }

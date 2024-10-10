@@ -1,17 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { loginUser } from "../api/requestService";
 import { setAuthToken } from "../api/appClient";
+import { loginUser } from "../api/requestService";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [registeredUser, setRegisteredUser] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+
         if (token) {
             setAuthToken(token)
             setIsAuthenticated(true);
@@ -19,29 +18,15 @@ export const AuthProvider = ({ children }) => {
         }
 
         setIsAuthenticated(false);
-        setLoading(false);
     }, [])
 
     const handleLogin = async (data) => {
-        setLoading(true);
         setError('');
 
         try {
-            const { data: userData, token, error } = await loginUser(data);
-            if (error) {
-                return setError(error)
-            }
-
-            if (token) {
-                localStorage.setItem('token', token);
-                setAuthToken(token)
-                setIsAuthenticated(userData);
-                return true;
-            }
+            return await loginUser(data);
         } catch (err) {
             setError(err || "Error en el inicio de sesión");
-        } finally {
-            setLoading(false);
         }
 
         return false;
@@ -49,21 +34,20 @@ export const AuthProvider = ({ children }) => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('email');
+        localStorage.removeItem('role');
         setAuthToken(null);
         setIsAuthenticated(false);
-        setRegisteredUser(null);
     }
 
     return (
         <AuthContext.Provider
             value={{
-                handleLogin,
+                error,
                 isAuthenticated,
                 handleLogin,
-                registeredUser,
+                handleLogin,
                 handleLogout,
-                error,
-                loading
             }}
         >
             {children}

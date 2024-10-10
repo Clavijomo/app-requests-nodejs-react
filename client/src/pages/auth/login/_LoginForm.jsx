@@ -8,6 +8,7 @@ import { useShowPassword } from "../../../hooks/useShowPassword";
 import { AuthUserPath } from "../../../routes/auth";
 import { loginSchema } from "../../../validations/auth";
 import { CustomTooltip } from "../../../components/CustomTooltip";
+import { getRoleFromToken } from "../../../helpers/getRoleFromToken";
 
 export const LoginForm = () => {
     const navigate = useNavigate();
@@ -25,8 +26,13 @@ export const LoginForm = () => {
     }
 
     const onSubmit = async (data) => {
-        const isLoggedIn = await handleLogin(data);
-        if (isLoggedIn) return navigate(AuthUserPath.dashboard)
+        const response = await handleLogin(data);
+        if (response.status >= 200 || response.status <= 300) {
+            await getRoleFromToken(response.token);
+            localStorage.setItem('token', response.data.token);
+            navigate(AuthUserPath.dashboard);
+            return;
+        }
     }
 
     return (

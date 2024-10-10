@@ -3,12 +3,12 @@ import { Navigate } from 'react-router-dom';
 import { AuthUserPath } from './auth';
 import { useDataHook } from '../context/AuthContext';
 
-export const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated, loading } = useDataHook();
+export const ProtectedRoute = ({ children, redirectTo = AuthUserPath.signUp }) => {
+    const isAuthenticated = localStorage.getItem('token');;
 
-    if (loading) {
-        <Stack> Loading...</Stack>
-    }
 
-    return isAuthenticated ? children : <Navigate to={AuthUserPath.signUp} />
+    return isAuthenticated ?
+        children
+        :
+        <Navigate to={redirectTo} />
 };

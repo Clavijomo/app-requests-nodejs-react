@@ -30,13 +30,19 @@ export const createUser = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new User({ name, email, password: hashedPassword, role: role });
+        const newUser = new User({ name, email, password: hashedPassword, role });
         await newUser.save();
 
-        const payload = { user: { id: newUser.id, role: newUser.role } };
+        const payload = {
+            user:
+            {
+                id: newUser.id,
+                email: newUser.email,
+                role: newUser.role
+            }
+        };
 
         const token = await signToken(payload);
-
         res.status(201).json({ token });
 
     } catch (err) {
@@ -58,12 +64,15 @@ export const loginUser = async (req, res) => {
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
-
-        const token = jwt.sign(
-            { userId: user._id, role: user.role },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
-        );
+        const payload = {
+            user:
+            {
+                id: user.id,
+                email: user.email,
+                role: user.role
+            }
+        };
+        const token = await signToken(payload)
 
         res.status(200).json({ message: "Sesion iniciada", token: token });
     } catch (err) {

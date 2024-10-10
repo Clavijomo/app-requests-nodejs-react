@@ -1,21 +1,5 @@
 import { API } from "./appClient";
 
-const handleAPIResponse = async (requestFn) => {
-    try {
-        const response = await requestFn();
-
-        if (response.status >= 200 && response.status < 300) {
-            return { data: response.data, token: response.data?.token, error: null };
-        } else {
-            const errorMessage = response.data?.message || `Error: Código de estado ${response.status}`;
-            return { data: null, token: null, error: errorMessage };
-        }
-    } catch (err) {
-        const errorMessage = err.response?.data?.message || err.message || "Hubo un error en la petición";
-        return { data: null, token: null, error: errorMessage };
-    }
-};
-
 export const getAllRequests = async () => {
     let errorMessage = '';
     try {
@@ -49,7 +33,11 @@ export const createRequest = async (request) => {
 }
 
 export const loginUser = async (data) => {
-    return handleAPIResponse(() => API.post('/login', data));
+    try {
+        return await API.post('/login', data);
+    } catch {
+        return 'erorr';
+    }
 };
 
 export const createUser = async (data) => {

@@ -18,6 +18,7 @@ export const FormCreateRequest = ({ handleDialogRequest, getRequests }) => {
 
     const onSubmit = async (data) => {
         const typeRequest = Number(getValues('typeRequest'));
+        data.email = localStorage.getItem("email")
         const response = await createRequest({ ...data, typeRequest });
 
         if (response.status >= 200 || response.status <= 300) {
@@ -56,16 +57,6 @@ export const FormCreateRequest = ({ handleDialogRequest, getRequests }) => {
                             )}
                         />
                     </FormControl>
-                    <CustomTooltip>
-                        <OutlinedInput
-                            placeholder="Correo electrónico"
-                            sx={{
-                                borderRadius: 20,
-                                border: errors?.email && '1px solid red'
-                            }}
-                            {...register('email')}
-                        />
-                    </CustomTooltip>
                     <CustomTooltip>
                         <OutlinedInput
                             placeholder="Asunto"

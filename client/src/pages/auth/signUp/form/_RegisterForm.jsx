@@ -5,7 +5,6 @@ import { RegisterPrincipal } from './RegisterPrincipal.jsx';
 import { useNavigate } from 'react-router-dom';
 import { AuthUserPath } from '../../../../routes/auth.js';
 
-
 export const RegisterForm = () => {
     const navigate = useNavigate();
 
@@ -27,7 +26,7 @@ export const RegisterForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <Stack gap={2}>
                 <FormControl sx={{ width: '100%', gap: 2 }}>
-                    <FormLabel>Elige tu entidad</FormLabel>
+                    <FormLabel>Elige tu rol</FormLabel>
                     <Controller
                         name='role'
                         control={control}

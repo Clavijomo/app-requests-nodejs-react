@@ -16,7 +16,6 @@ export const setAuthToken = (token) => {
     return delete API.defaults.headers.common['Authorization'];
 }
 
-
 API.interceptors.response.use(
     response => response,
     error => {

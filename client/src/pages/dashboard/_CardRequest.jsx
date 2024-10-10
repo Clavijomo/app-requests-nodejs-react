@@ -1,8 +1,9 @@
 import { DeleteOutline } from '@mui/icons-material';
 import { Alert, Button, Card, CardActions, CardContent, Divider, Stack, Typography } from '@mui/material';
 import { deleteRequest } from '../../api/requestService';
+import { CustomTooltip } from '../../components/CustomTooltip';
 
-export const CardRequest = ({ request, getRequest }) => {
+export const CardRequest = ({ request, getRequest, cantDeleteRequests }) => {
     const {
         code,
         description,
@@ -33,11 +34,17 @@ export const CardRequest = ({ request, getRequest }) => {
                 </Stack>
             </CardContent>
             <Divider />
-            <CardActions onClick={() => handleDeleteRequest(code)}>
-                <Button size='small' startIcon={<DeleteOutline />} color='error'>
-                    Eliminar solicitud
-                </Button>
-            </CardActions>
+            {cantDeleteRequests ?
+                <CardActions onClick={() => handleDeleteRequest(code)}>
+                    <Button size='small' startIcon={<DeleteOutline />} color='error'>
+                        Eliminar solicitud
+                    </Button>
+                </CardActions>
+                :
+                <CustomTooltip message={'No tienes permisos'}>
+                    <Button startIcon={<DeleteOutline />} disabled>Eliminar solicitud</Button>
+                </CustomTooltip>
+            }
         </Card>
     )
 }

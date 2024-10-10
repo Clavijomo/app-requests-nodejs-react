@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { createUser } from "../../api/requestService";
 import { AuthUserPath } from "../../routes/auth";
 import { registerSchema } from "../../validations/auth";
+import { getRoleFromToken } from "../../helpers/getRoleFromToken";
 
 export const useRegisterSechema = () => {
     const navigate = useNavigate();
@@ -13,16 +14,15 @@ export const useRegisterSechema = () => {
     });
 
     const onSubmit = async (data) => {
-        data.role = Number(data.role);
-        const response = await createUser(data);
-        console.log(response)
+        const response = await createUser({ ...data, role: Number(data.role) });
         if (response.status >= 200 || response.status <= 300) {
+            await getRoleFromToken(response.token);
             localStorage.setItem('token', response.data.token);
-            navigate('/dashboard');
+            navigate(AuthUserPath.dashboard);
             return;
         }
 
-        return alert('Hubo un error')
+        return Navigate(AuthUserPath.signUp);
     }
 
     return {

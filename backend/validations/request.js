@@ -19,6 +19,5 @@ export class ValidationRequest {
     static subject(subject) {
         if (typeof subject !== 'string') throw new Error('El campo Asunto debe ser un string');
         if (subject.length < 3) throw new Error('El campo Asunto debe contener al menos 3 caracteres');
-
     }
 }

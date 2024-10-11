@@ -7,6 +7,15 @@ The project is divided into two main directories:
 - **client**: Contains the frontend implementation.
 - **server**: Contains the backend implementation.
 
+## Live Endpoints
+
+- **Frontend** (hosted on **Netlify**): [https://app-requests-front.netlify.app/dashboard](https://app-requests-front.netlify.app/dashboard)
+- **Backend** (hosted on **Heroku**): [https://api-requests-93d7054ed472.herokuapp.com/](https://api-requests-93d7054ed472.herokuapp.com/)
+
+### Hosting Details:
+- The **frontend** was deployed using **Netlify**, a platform that allows easy deployment and hosting for static client projects.
+- The **backend** was deployed using **Heroku**, a cloud platform that simplifies the process of deploying and running Node.js applications.
+
 ## Backend
 
 ### Technologies Used:
@@ -94,4 +103,4 @@ The database is hosted on a free MongoDB Atlas cluster.
     ```
 
 ## Conclusion
-This project demonstrates the use of MVC architecture with a full-stack implementation in Node.js and React. The backend is secured with JWT-based authentication, and the frontend uses React and Material-UI for a seamless user experience.
+This project demonstrates the use of MVC architecture with a full-stack implementation in Node.js and React. The backend is secured with JWT-based authentication, and the frontend uses React and Material-UI for a seamless user experience. The frontend is hosted on **Netlify**, and the backend is hosted on **Heroku**.

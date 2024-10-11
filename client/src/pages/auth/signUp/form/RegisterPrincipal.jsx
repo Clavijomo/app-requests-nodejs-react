@@ -2,7 +2,7 @@ import { VisibilityOutlined } from '@mui/icons-material';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import { IconButton, InputAdornment, OutlinedInput, Stack } from '@mui/material';
 import { CustomTooltip } from '../../../../components/CustomTooltip';
-import { useShowPassword } from '../../../../hooks/useShowPassword';
+import { useShowPassword } from '../../../../hooks/auth/useShowPassword';
 
 export const RegisterPrincipal = ({ register, errors }) => {
     const { handleClickShowPassword, showPassword } = useShowPassword();

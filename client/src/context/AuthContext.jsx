@@ -1,53 +1,23 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import { setAuthToken } from "../api/appClient";
-import { loginUser } from "../api/requestService";
+import { useFetchingLogin } from "./AuthActions";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [error, setError] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-
-        if (token) {
-            setAuthToken(token)
-            setIsAuthenticated(true);
-            return
-        }
-
-        setIsAuthenticated(false);
-    }, [])
-
-    const handleLogin = async (data) => {
-        setError('');
-
-        try {
-            return await loginUser(data);
-        } catch (err) {
-            setError(err || "Error en el inicio de sesión");
-        }
-
-        return false;
-    }
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
-        localStorage.removeItem('role');
-        setAuthToken(null);
-        setIsAuthenticated(false);
-    }
+    const {
+        handleLogin,
+        handleLogout,
+        isAuthenticated,
+    } = useFetchingLogin();
 
     return (
         <AuthContext.Provider
             value={{
-                error,
                 isAuthenticated,
-                handleLogin,
-                handleLogin,
-                handleLogout,
+                login: (data) => handleLogin(data),
+                handleLogout: () => handleLogout(setAuthToken),
             }}
         >
             {children}

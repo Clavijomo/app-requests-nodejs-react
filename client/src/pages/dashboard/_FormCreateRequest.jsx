@@ -1,38 +1,22 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AddOutlined } from "@mui/icons-material";
 import { Alert, Button, FormControl, FormControlLabel, FormLabel, OutlinedInput, Radio, RadioGroup, Stack, TextField } from "@mui/material";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { createRequest } from "../../api/requestService";
+import { Controller } from "react-hook-form";
 import { CustomTooltip } from "../../components/CustomTooltip";
-import { registerRequestSchema } from "../../validations/request";
+import { useSubmitData } from "../../hooks/auth/useSubmitData";
 
 export const FormCreateRequest = ({ handleDialogRequest, getRequests }) => {
-    const [responseExit, setResponseExit] = useState(false);
-    const { handleSubmit, register, getValues, formState: { errors, isValid }, control, } = useForm({
-        resolver: zodResolver(registerRequestSchema),
-        defaultValues: {
-            typeRequest: 1
-        }
-    })
-
-    const onSubmit = async (data) => {
-        const typeRequest = Number(getValues('typeRequest'));
-        data.email = localStorage.getItem("email")
-        const response = await createRequest({ ...data, typeRequest });
-
-        if (response.status >= 200 || response.status <= 300) {
-            setResponseExit(true);
-            setTimeout(() => {
-                handleDialogRequest();
-                getRequests()
-                // Volver a GET;
-            }, 1000);
-            return
-        }
-
-        return <Alert severity="error">Hubo un error</Alert>
-    };
+    const {
+        control,
+        errors,
+        isValid,
+        responseExit,
+        handleSubmit,
+        onSubmit,
+        register,
+    } = useSubmitData(
+        getRequests,
+        handleDialogRequest
+    );
 
     return (
         <Stack>

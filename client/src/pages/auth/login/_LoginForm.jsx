@@ -3,18 +3,20 @@ import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { Alert, Button, IconButton, InputAdornment, OutlinedInput, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { CustomTooltip } from "../../../components/CustomTooltip";
 import { useDataHook } from "../../../context/AuthContext";
-import { useShowPassword } from "../../../hooks/useShowPassword";
+import { getTokenAndResponse } from "../../../helpers/getTokenAndResponse";
+import { useShowPassword } from "../../../hooks/auth/useShowPassword";
 import { AuthUserPath } from "../../../routes/auth";
 import { loginSchema } from "../../../validations/auth";
-import { CustomTooltip } from "../../../components/CustomTooltip";
-import { getRoleFromToken } from "../../../helpers/getRoleFromToken";
+import { useState } from "react";
 
 export const LoginForm = () => {
     const navigate = useNavigate();
+    const [errorRequest, setErrorRequest] = useState('');
 
     const { handleClickShowPassword, showPassword } = useShowPassword();
-    const { handleLogin, error, loading } = useDataHook();
+    const { login } = useDataHook();
     const { handleSubmit, register, formState: { errors } } = useForm({
         resolver: zodResolver(loginSchema)
     });
@@ -26,12 +28,14 @@ export const LoginForm = () => {
     }
 
     const onSubmit = async (data) => {
-        const response = await handleLogin(data);
+        const response = await login(data);
+        console.log(response);
         if (response.status >= 200 || response.status <= 300) {
-            await getRoleFromToken(response.token);
-            localStorage.setItem('token', response.data.token);
-            navigate(AuthUserPath.dashboard);
-            return;
+            await getTokenAndResponse(response, navigate, 'token');
+        }
+
+        if (response.status >= 400 || response.status < 500) {
+            setErrorRequest('Email o contraseña incorrecta');
         }
     }
 
@@ -70,16 +74,19 @@ export const LoginForm = () => {
                             />
                         </CustomTooltip>
                     </Stack>
-                    {error &&
-                        <Alert title="Hola" severity="error">{error}</Alert>
+                    {errorRequest &&
+                        <Alert title="Hola" severity="error">{errorRequest}</Alert>
                     }
                     <Button
                         sx={{ width: "80%", margin: "auto", textTransform: "initial", fontSize: 16 }}
                         type="submit"
                         variant="contained"
                     >
-                        {loading ? "Cargando..." : "Iniciar sesión"}
+                        Iniciar sesión
                     </Button>
+                    {errorRequest &&
+                        <Alert severity="error">{errorRequest}</Alert>
+                    }
                     <Stack margin={'auto'} direction={'row'} alignItems={'center'} gap={1}>
                         <Typography color="text.secondary">¿No tienes cuenta?</Typography>
                         <Button

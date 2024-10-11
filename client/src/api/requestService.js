@@ -36,7 +36,7 @@ export const loginUser = async (data) => {
     try {
         return await API.post('/login', data);
     } catch {
-        return 'erorr';
+        return 'error';
     }
 };
 

@@ -1,26 +1,34 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
-import { useRegisterSechema } from '../../../../hooks/auth/useRegisterSchema.js';
-import { Controller } from 'react-hook-form';
-import { RegisterPrincipal } from './RegisterPrincipal.jsx';
+import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { createUser } from '../../../../api/requestService.js';
+import { getTokenAndResponse } from '../../../../helpers/getTokenAndResponse.js';
 import { AuthUserPath } from '../../../../routes/auth.js';
+import { registerSchema } from '../../../../validations/auth.js';
+import { RegisterPrincipal } from './RegisterPrincipal.jsx';
 
 export const RegisterForm = () => {
     const navigate = useNavigate();
 
-    const {
-        errors,
-        control,
-        handleSubmit,
-        onSubmit,
-        register
-    } = useRegisterSechema();
+    const { register, handleSubmit, formState: { errors }, control } = useForm({
+        resolver: zodResolver(registerSchema)
+    });
 
     const handleRedirectLogin = () => {
         setTimeout(() => {
             navigate(AuthUserPath.login)
         }, 500)
     };
+
+    const onSubmit = async (data) => {
+        const response = await createUser({ ...data, role: Number(data.role) });
+        if (response.status >= 200 || response.status <= 300) {
+            return await getTokenAndResponse(response, navigate, 'token');
+        }
+
+        return navigate(AuthUserPath.signUp);
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -11,20 +11,21 @@ export const App = () => {
         <AuthProvider>
             <BrowserRouter>
                 <Routes>
-                    <Route path={AuthUserPath.principal} element={
-                        <ProtectedRoute redirectTo={AuthUserPath.signUp}>
-                            <Navigate to={AuthUserPath.dashboard} />
-                        </ProtectedRoute>
-                    } />
-                    <Route path={AuthUserPath.signUp} element={<SignUpPage />} />
-                    <Route path={AuthUserPath.login} element={<LoginPage />} />
-                    <Route path={AuthUserPath.dashboard}
+                    <Route path={AuthUserPath.principal}
                         element={
                             <ProtectedRoute>
                                 <Dashboard />
                             </ProtectedRoute>
                         }
                     />
+                    <Route path={AuthUserPath.principal} element={
+                        <ProtectedRoute redirectTo={AuthUserPath.signUp}>
+                            <Navigate to={AuthUserPath.principal} />
+                        </ProtectedRoute>
+                    } />
+
+                    <Route path={AuthUserPath.signUp} element={<SignUpPage />} />
+                    <Route path={AuthUserPath.login} element={<LoginPage />} />
                 </Routes>
             </BrowserRouter>
         </AuthProvider>

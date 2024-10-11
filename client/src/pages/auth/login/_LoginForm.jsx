@@ -29,7 +29,6 @@ export const LoginForm = () => {
 
     const onSubmit = async (data) => {
         const response = await login(data);
-        console.log(response);
         if (response.status >= 200 || response.status <= 300) {
             await getTokenAndResponse(response, navigate, 'token');
         }

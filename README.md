@@ -9,7 +9,7 @@ The project is divided into two main directories:
 
 ## Live Endpoints
 
-- **Frontend** (hosted on **Netlify**): [https://app-requests-front.netlify.app/dashboard](https://app-requests-front.netlify.app/dashboard)
+- **Frontend** (hosted on **Netlify**): [https://app-requests-front.netlify.app](https://app-requests-front.netlify.app/dashboard)
 - **Backend** (hosted on **Heroku**): [https://api-requests-93d7054ed472.herokuapp.com/](https://api-requests-93d7054ed472.herokuapp.com/)
 
 ### Hosting Details:

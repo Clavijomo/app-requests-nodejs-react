@@ -42,7 +42,7 @@ export const loginUser = async (data) => {
 
 export const createUser = async (data) => {
     try {
-        return await API.post('/signup/', data)
+        return await API.post('/signup', data)
     } catch (err) {
         return 'Hubo un error', err;
     }
